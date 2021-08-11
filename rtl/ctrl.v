@@ -1,8 +1,9 @@
-module ctrl #(parameter S=8)(
+module ctrl #(parameter S=8,
+                parameter addrwidth=3)(
     input clk,
     input reset,
     output reg finished,
-    output reg [2:0] addr_r,addr_c
+    output reg [addrwidth:0] addr_r,addr_c
 );
     integer state;
     always @(posedge clk) begin
@@ -19,20 +20,24 @@ module ctrl #(parameter S=8)(
     end
     always @(state) begin
         if(state==0)begin
-            addr_r<='bx;
-            addr_c<='bx;
+            addr_r<=8;
+            addr_c<=8;
         end
         else if(state==1)begin
             addr_r<=state-1;
-            addr_c<='bx;
+            addr_c<=8;
         end
         else if(state<=S)begin
             addr_r<=state-1;
             addr_c<=state-2;
         end
         else if(state==S+1) begin
-            addr_r <='bx;
+            addr_r <=8;
             addr_c <=state-2;
+        end
+        else begin
+            addr_r<=8;
+            addr_c<=8;
         end
     end
 endmodule

@@ -11,12 +11,12 @@ module s1neuron #(parameter M=8,          //# of input layer
     genvar i;
     generate
         for (i=1;i<=M;i=i+1) begin:gen
-            multiplier mul(.a(X[n*i-1 -:n]),
+            multiplier #(n,intbits,fracbits)mul(.a(X[n*i-1 -:n]),
                            .b(W[n*i-1 -:n]),
                            .result(WX[n*i-1 -:n]),
                            .ovf(ovf[i-1])
                             );
         end
     endgenerate
-    adder_tree #(8,32,12,20) adder(WX,H);
+    adder_tree #(M,n,intbits,fracbits) adder(WX,H);
 endmodule
